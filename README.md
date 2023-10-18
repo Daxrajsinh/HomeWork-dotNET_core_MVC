@@ -1,22 +1,41 @@
-# DotNetCoreMVCProject_CE118_CE130 (Blackboard)
+# Homework (.NET Core MVC project)
 
+The "Homework" project is a .NET Core MVC application designed to simplify homework assignment, submission, and class management. It offers a user-friendly interface for both Teachers (mentors) and Students, providing essential features like homework assignment, submission, 2-factor authentication, QR code generation, data download, and class invitations.
 
-<h2>Blackboard</h2>
+## Prepared By
 
-## Teck Stack :-
+- Daxrajsinh Jadeja (CE052)
+- Ayush Gevariya (CE042)
 
-![](https://img.shields.io/badge/.NET-512BD4?style=for-the-badge&logo=dotnet&logoColor=white)
-![HTML5](https://img.shields.io/badge/HTML5-E34F26?style=for-the-badge&logo=html5&logoColor=white)
-![JavaScript](https://img.shields.io/badge/JavaScript-323330?style=for-the-badge&logo=javascript&logoColor=F7DF1E)
-![Bootstrap](https://img.shields.io/badge/Bootstrap-563D7C?style=for-the-badge&logo=bootstrap&logoColor=white)
+## Features
 
-<br/>
+- **User Roles:** The system supports two user roles: Teacher (Mentor) and Student.
 
-<h3><b>WAD Project (.Net Core MVC) </b></h3>
+- **Homework Assignment:** Teachers can create, edit, and delete homework assignments, specifying due dates and other relevant details.
 
-_**Created by :-**_ <br>[Ayush Rudani ( CE118 )](https://github.com/R-Ayush777)<br>[Smit Padaliya ( CE130 )](https://github.com/Smit-05)
+- **Homework Submission:** Students can submit homework online, receive due date reminders, and get notifications.
 
-<hr> 
+- **2-Factor Authentication and QR Code Generation:** Enhanced security with 2-factor authentication using QR code scanning.
 
-### Video Link : https://youtu.be/5VTypbQ8OJs
-### Drive Link : https://drive.google.com/file/d/1L_yObOCAW6BrHom7IbiBBtWfocyOOcmg/view?usp=sharing
+- **Download Personal Data:** Users can download their personal data stored in the system in the form of a .json file.
+
+- **Class Management:** Teachers can invite students to join classes, and students can accept or decline these invitations.
+
+## Prerequisites
+
+Before you get started, make sure you have the following prerequisites installed on your system:
+
+- [.NET Core SDK](https://dotnet.microsoft.com/download)
+- [Visual Studio](https://visualstudio.microsoft.com/) or [Visual Studio Code](https://code.visualstudio.com/)
+- [SQL Server](https://www.microsoft.com/en-us/sql-server/sql-server-downloads)
+
+## Installation
+
+1. Clone the repository to your local machine:
+
+   ```bash
+   git clone [[https://github.com/yourusername/homework.git](https://github.com/Daxrajsinh/HomeWork-dotNET_core_MVC.git)](https://github.com/yourusername/homework.git)
+   
+2. Open the project in your Visual Studio Code.
+3. Change the connection String accordingly.
+4. Build and run the project.
