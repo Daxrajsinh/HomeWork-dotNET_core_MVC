@@ -34,7 +34,7 @@ Before you get started, make sure you have the following prerequisites installed
 1. Clone the repository to your local machine:
 
    ```bash
-   git clone https://github.com/yourusername/homework.git
+   git clone https://github.com/Daxrajsinh/HomeWork-dotNET_core_MVC.git
    
 2. Open the project in your Visual Studio Code.
 3. Change the connection String accordingly.
