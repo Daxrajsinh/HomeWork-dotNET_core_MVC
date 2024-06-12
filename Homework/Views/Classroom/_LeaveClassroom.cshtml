@@ -1,0 +1,15 @@
+﻿@model Homework.ViewModels.ClassroomHomeViewModel
+
+<h6>Are you sure you want to leave this class?</h6>
+<div>
+    <p>
+        Deleting the classroom will result in loss of all Homeworks, and the people of the classroom. 
+        The assignments you submitted will remain, unless you delete them first. You won't be able to delete them later.
+        Be very sure before going ahead!
+    </p>
+    <hr />
+    <form asp-action="LeaveClassroom" method="post">
+        <input type="hidden" asp-for="@Model.Classroom.ID" />
+        <input type="submit" value="Yes, I am Sure" class="btn btn-danger" style="background-color: #5a9191; border-color: #5a9191; color: white" />
+    </form>
+</div>

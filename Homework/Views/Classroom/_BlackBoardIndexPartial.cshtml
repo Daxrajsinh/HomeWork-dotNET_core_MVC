@@ -1,0 +1,173 @@
+﻿@model Homework.ViewModels.ClassroomHomeViewModel
+@inject Microsoft.AspNetCore.Identity.UserManager<AppUser> _userManager
+@using Homework
+
+<h4 style="color: #5a9191">Black Board</h4>
+<hr />
+
+<div>
+    <form enctype="multipart/form-data" asp-action="BlackBoard" method="post">
+        <div asp-validation-summary="ModelOnly" class="text-danger" style="color: #5a9191"></div>
+        <input asp-for="BlackBoardViewModel.ClassId" type="hidden" value="@ViewData["ClassId"]" />
+        <div class="form-group">
+            <textarea  placeholder="Share something with the class!" asp-for="BlackBoardViewModel.content" class="form-control" rows="5" cols="30"></textarea>
+            <span asp-validation-for="BlackBoardViewModel.content" class="text-danger" style="color: #5a9191"></span>
+        </div>
+        <div class="form-group row">
+            <label class="col-sm-2 col-form-label">Upload Files:</label>
+            <div class="col-sm-10">
+                <div class="custom-file">
+                    <input asp-for="BlackBoardViewModel.Files" class="form-control custom-file-input" multiple>
+                    <label class="custom-file-label">Choose Files...</label>
+                </div>
+            </div>
+        </div>
+        <div class="form-group">
+            <input type="submit" value="Post" class="btn btn-primary" style="background-color: #5a9191; border-color: #5a9191; color: white">
+        </div>
+        <script>
+            $(document).ready(function () {
+                $('.custom-file input').change(function (e) {
+                    var files = [];
+                    for (var i = 0; i < $(this)[0].files.length; i++) {
+                        files.push($(this)[0].files[i].name);
+                    }
+                    $(this).next('.custom-file-label').html(files.join(', '));
+                });
+            });
+        </script>
+    </form>
+</div>
+
+<div>
+    @{
+        int index = -1;
+    }
+    @foreach (var item in Model.BlackBoards)
+    {
+        index += 1;
+        AppUser user = await _userManager.FindByIdAsync(item.AppUserId);
+        <div class="content-block" style="border-radius: 10px;">
+
+            <div class="card p-3 mb-2" style="border: 2px solid #5a9191; border-radius: 10px; background-color: #f7f7f7;">
+                <div class="d-flex justify-content-between">
+                    <div class="d-flex flex-row align-items-center">
+                        <div class="ms-2 c-details">
+                            <h5 class="mb-0 fw-bold text-primary">@user</h5>
+                        </div>
+                    </div>
+                </div>
+                <div class="mt-3">
+                    <h4 class="heading" style="color: #5a9191">@CustomHelpers.DisplayWithLinksFor(item.content)</h4>
+                    @if (item.FilesPaths != null)
+                    {
+                        string[] files = item.FilesPaths.Split(",");
+                        if (files.Count() > 1 || (files.Count() == 1 && files[0].Length != 0))
+                        {
+                            <hr style="border-color: #5a9191" />
+                        }
+                        foreach (string file in files)
+                        {
+                            if (file.Length == 0)
+                            {
+                                continue;
+                            }
+                            var filePath = "~/Homework/" + file;
+                            var filename = file.Substring(file.IndexOf("_") + 1, file.Length - file.IndexOf("_") - 1);
+                            var fileUrl = "https://localhost:44300" + "/Homework/" + file;
+                            <a target="_blank" href="@fileUrl" style="color: #5a9191;">
+                                <i class="fa-solid fa-paperclip"></i> @filename
+                            </a>
+                            <br />
+                        }
+                    }
+                    @if (Model.ClassroomUserRole == "Mentor")
+                    {
+                        <hr style="border-color: #5a9191" />
+                        <a class="btn btn-danger" asp-controller="Classroom" asp-action="DeleteBlackBoard" asp-route-id="@item.Id" style="background-color: #5a9191; border-color: #5a9191; color: white">Delete this Post</a>
+                    }
+                </div>
+            </div>
+
+            <div style="background-color: #eeeeee; padding: 20px; height: 100%; width: 100%; border-bottom-left-radius: inherit; border-bottom-right-radius: inherit">
+                <form class="form-inline" asp-action="AddComment" method="post">
+                    <input type="hidden" asp-for="@Model.Comment.BlackBoardId" value="@item.Id" />
+                    <input style="width: 750px; border-radius: 8px;" type="text" class="form-control" asp-for="@Model.Comment.Content" placeholder="Comment on this Post..." />
+                    <input type="submit" value="Submit" class="btn btn-dark ml-2" style="border-radius: 8px" />
+                </form>
+                @foreach (Comment comment in Model.Comments[index])
+                {
+                    <section class="my-2">
+                        <div class="card" style="border-radius: 10px;">
+                            <div class="card-body">
+                                <h6 class="fw-bold text-primary mb-1">@comment.AppUser.UserName</h6>
+                                <p class="text-muted small mb-0">
+                                    @comment.TimeCreated.Date.ToLongDateString()
+                                </p>
+                                <p class="mt-1 mb-2 pb-2">
+                                    @comment.Content
+                                </p>
+                            </div>
+                        </div>
+                    </section>
+                }
+            </div>
+        </div>
+        <br />
+    }
+</div>
+
+<style>
+    .content-block {
+        border: 1px solid #dddddd;
+        border-radius: 10px;
+        padding: 20px;
+    }
+
+    .card {
+        border: none;
+        border-radius: 10px;
+        background-color: #f7f7f7;
+    }
+
+    .icon {
+        width: 50px;
+        height: 50px;
+        background-color: #eee;
+        border-radius: 15px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 39px;
+    }
+
+    .badge span {
+        background-color: #fffbec;
+        width: 60px;
+        height: 25px;
+        padding-bottom: 3px;
+        border-radius: 5px;
+        display: flex;
+        color: #fed85d;
+        justify-content: center;
+        align-items: center;
+    }
+
+    .progress {
+        height: 10px;
+        border-radius: 10px;
+    }
+
+        .progress div {
+            background-color: red;
+        }
+
+    .text1 {
+        font-size: 14px;
+        font-weight: 600;
+    }
+
+    .text2 {
+        color: #a5aec0;
+    }
+</style>

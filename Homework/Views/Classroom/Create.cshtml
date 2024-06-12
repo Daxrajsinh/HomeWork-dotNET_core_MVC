@@ -1,0 +1,37 @@
+﻿@model Homework.Models.Classroom
+
+@{
+    ViewData["Title"] = "Create";
+}
+
+<h4 style="color: #5a9191">Create Your Own Classroom!</h4>
+<hr />
+<div class="row">
+    <div class="col-md-8">
+        <form asp-action="Create">
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+            <div class="form-group">
+                <label asp-for="title" class="control-label">Title</label>
+                <input asp-for="title" class="form-control" placeholder="Class a name"/>
+                <span asp-validation-for="title" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="description" class="control-label">Description</label>
+                <textarea asp-for="description" class="form-control" rows="5" cols="30" 
+                          placeholder="Enter some description for your classroom"></textarea>
+                <span asp-validation-for="description" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <input type="submit" value="Create" class="btn btn-primary" style="background-color: #5a9191; border-color: #5a9191; color: white"/>
+            </div>
+        </form>
+    </div>
+</div>
+
+<div>
+    <a asp-action="Index">Cancel</a>
+</div>
+
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+}

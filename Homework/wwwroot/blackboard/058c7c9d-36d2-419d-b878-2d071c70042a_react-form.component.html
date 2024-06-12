@@ -1,0 +1,100 @@
+<div class="container-fluid">
+    <h2>User Registration Form (Reactive Form)</h2>
+    <h4>{{ user.value | json }} </h4>
+    <form   [formGroup]="user" 
+            (ngSubmit)="onSubmit(user)" 
+            #newUserForm
+            novalidate>
+
+        <div class="form-group">
+            <label>User Name</label>
+            <input  type="text"
+                    placeholder="User name" 
+                    class="form-control"
+                    formControlName="name">
+            <small  *ngIf="user.get('name').hasError('required') 
+                            && user.get('name').touched"
+                    class="text-danger">
+                User name is required!
+            </small>
+        </div>
+
+        <div class="form-group">
+            <label>Email Id</label>
+            <input  type="email" 
+                    placeholder="Email" 
+                    name="email"
+                    class="form-control"
+                    formControlName="email"
+            >
+            <small *ngIf="user.get('email').hasError('email') 
+                        && user.get('email').touched"
+                    class="text-danger">
+                Email is invalid!
+            </small>
+            <small *ngIf="user.get('email').hasError('required') 
+                        && user.get('email').touched"
+                    class="text-danger">
+                Email is required!
+            </small>
+        </div>
+
+        <div class="form-group">
+            <label>Password</label>
+            <input  type="password"
+                    placeholder="Password"
+                    name="password"
+                    class="form-control"
+                    formControlName="password"
+            >
+            <small *ngIf = "user.get('password').hasError('required') 
+                        && user.get('password').touched" 
+                    class="text-danger">
+                Password is required!
+            </small>
+        </div>
+
+        <div formGroupName="address">
+            <div class="form-group">
+                <label>City</label>
+                <input  type="text" 
+                        placeholder="City" 
+                        name="city"
+                        class="form-control" 
+                        formControlName="city">
+            </div>
+            <div class="form-group">
+                <label>State</label>
+                <input  type="text" 
+                        placeholder="State" 
+                        name="state"
+                        class="form-control" 
+                        formControlName="state">
+            </div>
+            <div class="form-group">
+                <label>Country</label>
+                <input  type="text" 
+                        placeholder="Country" 
+                        name="country"
+                        class="form-control" 
+                        formControlName="country">
+            </div>
+        </div>
+        <button type="submit" 
+                class="btn btn-primary" 
+                [disabled]="user.invalid"
+        >
+            Register
+        </button>
+        <button (click)="user.reset()" 
+                class="btn btn-secondary ml-4"
+        >
+            Reset
+        </button>
+        <button class="btn btn-warning ml-4"
+                (click)="loadFormWithData()"
+        >
+                Load Form with Data
+        </button>
+    </form>
+</div>

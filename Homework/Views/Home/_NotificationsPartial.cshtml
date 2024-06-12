@@ -1,0 +1,42 @@
+﻿@model Homework.ViewModels.HomeViewModel
+<h5 style="color:#5a9191">Notifications 🔔</h5>
+@if (Model.Invites.Count() != 0)
+{
+    foreach (Invite invite in Model.Invites)
+    {
+        string modalid = "ModalID" + invite.Classroom.ID.ToString();
+        <p>
+            <span class="text-dark">You have been invited to join <b>@invite.Classroom.title</b> Classroom</span>
+            
+                <div style="margin-top:-5px">
+                    <a class="badge-pill badge-primary" style="text-decoration:none;" asp-controller="Classroom" asp-action="AcceptStudentInvite" asp-route-id="@invite.Classroom.ID">Accept</a><span>&nbsp;</span>
+            <span type="button" class="badge-pill badge-danger" data-toggle="modal" data-target="#@modalid">
+                Decline
+            </span>
+                </div>
+        </p>
+        <div class="modal fade" id="@modalid" tabindex="-1" role="dialog" aria-labelledby="StudentsModalLabel" aria-hidden="true">
+            <div class="modal-dialog" role="document">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="StudentsModalLabel">Decline Invite</h5>
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                    </div>
+                        <div class="modal-body">
+                            <span class="text-muted">Are you sure you want to decline invite from <b>@invite.Classroom.title</b> ?</span><br />
+                        </div>
+                        <div class="modal-footer">
+                            <a class="btn btn-danger" asp-controller="Classroom" asp-action="DeclineStudentInvite" asp-route-id="@invite.Classroom.ID">Yes</a>
+                            <button class="btn btn-secondary" data-dismiss="modal">No</button>
+                        </div>
+                </div>
+            </div>
+        </div>
+    }
+}
+else
+{
+    <span class="small text-dark">No notifications right now.</span>
+}

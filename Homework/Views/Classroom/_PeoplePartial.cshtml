@@ -1,0 +1,62 @@
+﻿@model Homework.ViewModels.ClassroomHomeViewModel
+
+<h4 style="color: #5a9191">Mentors</h4>
+<hr />
+@foreach (var item in Model.ClassroomMentors)
+{
+    <p>@Html.DisplayFor(modelItem => item.AppUser.UserName)</p>
+    //@Html.ActionLink("Edit", "Edit", new { /* id=item.PrimaryKey */ }) |
+}
+<br />
+<h4 style="color: #5a9191">Students</h4>
+<hr />
+@if (Model.ClassroomStudents.Count() != 0)
+{
+    foreach (var item in Model.ClassroomStudents)
+    {
+        <p>@Html.DisplayFor(modelItem => item.AppUser.UserName)</p>
+        //@Html.ActionLink("Edit", "Edit", new { /* id=item.PrimaryKey */ }) |
+    }
+}
+else if (Model.StudentInvites.Count() == 0)
+{
+    <span class="text-muted" style="color: #5a9191">It's silent right now. Invite some students over!</span><br/>
+}
+@foreach (var item in Model.StudentInvites)
+{
+    <p style="color: #5a9191">@item.Email (Invited)</p>
+}
+<br />
+@if (Model.ClassroomUserRole == "Mentor")
+{
+    <button title="Invite Students" type="button" class="btn btn-outline-primary" data-toggle="modal" data-target="#StudentsModal">
+        Invite Students
+    </button>
+}
+<div class="modal fade" id="StudentsModal" tabindex="-1" role="dialog" aria-labelledby="StudentsModalLabel" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="StudentsModalLabel" style="color: #5a9191">Invite Students</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <form asp-action="" method="post">
+                <div class="modal-body">
+                    <span class="small text-muted" style="color: #5a9191">Enter email address. Seperate multiple email addresses by whitespace</span><br /><br/>
+                    <div asp-validation-summary="ModelOnly" class="text-danger" style="color: #5a9191"></div>
+                    <input type="hidden" id="ClassId" name="ClassId" value="@Model.Classroom.ID" />
+                    <div class="form-group">
+                        <input placeholder="Email(s)" name="emails" id="emails" type="text" class="form-control" />
+                        <span class="text-danger" style="color: #5a9191"></span>
+                    </div>
+                </div>               
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal" style="color: #5a9191">Cancel</button>
+                    <button class="btn btn-primary" asp-action="InviteStudents" style="background-color: #5a9191; border-color: #5a9191; color: white">Invite</button>
+                </div>                
+            </form>
+        </div>
+    </div>
+</div>

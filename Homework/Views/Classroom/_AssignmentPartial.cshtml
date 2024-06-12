@@ -1,0 +1,104 @@
+﻿@model Homework.ViewModels.ClassroomHomeViewModel
+@inject Microsoft.AspNetCore.Identity.UserManager<AppUser> _userManager
+@using Homework
+
+<h4 style="color: #5a9191">Assignments</h4>
+<hr />
+
+<div>
+    @if (Model.ClassroomUserRole == "Mentor")
+    {
+        <div class="mb-4">
+            <form enctype="multipart/form-data" asp-action="NewAssignment" method="post">
+                <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+                <input asp-for="AssignmentViewModel.ClassId" type="hidden" value="@ViewData["ClassId"]" />
+                <div class="form-group">
+                    <input placeholder="Title of Assignment here" asp-for="AssignmentViewModel.Title" class="form-control" required />
+                    <span asp-validation-for="AssignmentViewModel.Title" class="text-danger"></span>
+                </div>
+                <div class="form-group">
+                    <textarea placeholder="Enter some description for your assignment" asp-for="AssignmentViewModel.Description" class="form-control" rows="5" cols="30" required></textarea>
+                    <span asp-validation-for="AssignmentViewModel.Description" class="text-danger"></span>
+                </div>
+                <div class="form-group">
+                    <div class="custom-file">
+                        <input asp-for="AssignmentViewModel.Files" class="form-control custom-file-input" multiple>
+                        <label class="custom-file-label">Choose Files...</label>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <input type="submit" value="Post Assignment" class="btn btn-primary" style="background-color: #5a9191; border-color: #5a9191;">
+                </div>
+                <script>
+                    $(document).ready(function () {
+                        $('.custom-file input').change(function (e) {
+                            var files = [];
+                            for (var i = 0; i < $(this)[0].files.length; i++) {
+                                files.push($(this)[0].files[i].name);
+                            }
+                            $(this).next('.custom-file-label').html(files.join(', '));
+                        });
+                    });
+                </script>
+            </form>
+        </div>
+    }
+</div>
+
+<div class="row">
+    @foreach (var item in Model.Assignments)
+    {
+        AppUser user = await _userManager.FindByIdAsync(item.AppUserID);
+
+        <div class="col-md-6 mb-4">
+            <div class="card" style="border: 2px solid #5a9191; border-radius: 10px; background-color: #f7f7f7;">
+                <div class="card-body">
+                    <h5 class="card-title" style="color: #5a9191;">@item.Title</h5>
+                    <p class="card-text text-secondary">@user</p>
+                    <hr />
+                    <p class="card-text">@CustomHelpers.DisplayWithLinksFor(item.Description)</p>
+
+                    @if (!string.IsNullOrWhiteSpace(item.Files))
+                    {
+                        string[] files = item.Files.Split(",");
+                        <hr />
+                        foreach (string file in files)
+                        {
+                            if (!string.IsNullOrWhiteSpace(file))
+                            {
+                                var filePath = "~/posted_assignments/" + file;
+                                var filename = file.Substring(file.IndexOf("_") + 1, file.Length - file.IndexOf("_") - 1);
+                                var fileUrl = "https://localhost:44300" + "/posted_assignments/" + file;
+                                <a target="_blank" href="@fileUrl" style="color: #5a9191;">
+                                    <i class="fa-solid fa-paperclip"></i> @filename
+                                </a>
+                                <br />
+                            }
+                        }
+                    }
+
+                    @if (Model.ClassroomUserRole == "Mentor")
+                    {
+                        <a class="btn btn-primary" asp-action="ViewSubmissions" asp-route-id="@item.ID" style="background-color: #5a9191; border-color: #5a9191;">View Submissions</a>
+                        <a class="btn btn-danger" asp-controller="Classroom" asp-action="DeleteAssignment" asp-route-id="@item.ID" style="background-color: #5a9191; border-color: #5a9191;">Delete Assignment</a>
+                    }
+                    else
+                    {
+                        <a class="btn btn-primary" asp-action="SubmitAssignment" asp-route-id="@item.ID" style="background-color: #5a9191; border-color: #5a9191;">Submit Assignment</a>
+                        <a class="btn btn-primary" asp-action="ViewSubmissions" asp-route-id="@item.ID" style="background-color: #5a9191; border-color: #5a9191;">View Your Submissions</a>
+                    }
+                </div>
+            </div>
+        </div>
+    }
+</div>
+
+<style>
+    .text-primary {
+        color: #5a9191;
+    }
+
+    .custom-file-label {
+        overflow: hidden;
+    }
+</style>

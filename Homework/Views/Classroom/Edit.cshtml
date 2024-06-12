@@ -1,0 +1,33 @@
+﻿@model Homework.Models.Classroom
+
+@{
+    ViewData["Title"] = "Edit";
+}
+
+<h4 style="color: #5a9191">Edit Classroom</h4>
+<hr />
+<div class="row">
+    <div class="col-md-8">
+        <form asp-action="Edit">
+            <div asp-validation-summary="ModelOnly" class="text-danger" style="color: #5a9191"></div>
+            <input type="hidden" asp-for="ID" />
+            <div class="form-group">
+                <label asp-for="title" class="control-label" style="color: #5a9191">Title</label>
+                <input asp-for="title" class="form-control" />
+                <span asp-validation-for="title" class="text-danger" style="color: #5a9191"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="description" class="control-label" style="color: #5a9191">Description</label>
+                <textarea asp-for="description" class="form-control" rows="5" cols="30"></textarea>
+                <span asp-validation-for="description" class="text-danger" style="color: #5a9191"></span>
+            </div>
+            <div class="form-group">
+                <input type="submit" value="Save Changes" class="btn btn-primary" style="background-color: #5a9191; border-color: #5a9191; color: white" />
+            </div>
+        </form>
+    </div>
+</div>
+
+<div>
+    <a asp-action="Home" asp-route-id="@Model.ID" asp-route-loadPartial="BlackBoard" class="text-danger" style="color: #5a9191">Cancel Edit</a>
+</div>
